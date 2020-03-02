@@ -2,6 +2,115 @@ gdrive
 ======
 
 
+> ### How to get rid of 403 errors
+> 
+> Many people get Errors like
+> `Failed to get file: googleapi: Error 403: Rate Limit Exceeded, rateLimitExceeded`
+> and thanks to LINKIWI [#392 (comment)](https://github.com/gdrive-org/gdrive/issues/392#issuecomment-423048518) I found a way to fix it properly.
+> #### What causes the problem?
+> 
+> The developer made one API for this program and an Google API can "only" make 10 million requests at a day. That means that too many people use this program and the requests gets full.
+> #### How much does an own API cost?
+> 
+> Nothing, Google made them free for everyone.
+> #### How do I fix it then?
+> 
+> You have to make an own API, download the programing language go, change the API to your own one and compile it to an .exe.
+> (And btw. binary editing resulted in errors)
+> #### And now step by step:
+> 
+>     1. Download "go" for your platform from https://golang.org/dl/ and install it following the instructions for your platform [here](https://golang.org/doc/install) and download Git from https://git-scm.com/downloads and install it with standard settings
+> 
+>     2. Download the repository as .zip from GitHub and unzip it in a new folder or simply execute
+>        `git clone https://github.com/gdrive-org/gdrive.git`
+>        ![image](https://user-images.githubusercontent.com/46388493/51983299-9a11d680-2498-11e9-81d3-fa6f6e8ddd86.png)
+> 
+>     3. Log into your Google Account (or create one) and go to the [Google Developer API Website](https://console.developers.google.com/apis/dashboard) (and if needed accept the ToS)
+> 
+>     4. Click on "Create Project"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983494-14425b00-2499-11e9-83bd-372b88bcda37.png)
+> 
+>     5. and then click "CREATE"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983553-3e941880-2499-11e9-9e15-cb40db9e5d4f.png)
+> 
+>     6. Give it a name (in my case "Google CLI TA40") and click "Create"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983662-93d02a00-2499-11e9-91b6-b50ed28e4943.png)
+> 
+>     7. Now go to [Google Drive API](https://console.developers.google.com/apis/library/drive.googleapis.com) and click "ENABLE"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983741-cbd76d00-2499-11e9-9adb-01a742f6f2ed.png)
+> 
+>     8. Now on the left side, click "Credentials"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983847-0b9e5480-249a-11e9-8a55-48f1f93e4193.png)
+> 
+>     9. And click "CREATE CREDENTIAL"
+>        ![image](https://user-images.githubusercontent.com/46388493/51983896-338db800-249a-11e9-92df-5bcf779942dd.png)
+> 
+>     10. Fill the things like I did and then click on "What credentials do I need?"
+>         ![image](https://user-images.githubusercontent.com/46388493/51983961-66d04700-249a-11e9-9039-d9d15025e31f.png)
+> 
+>     11. Give it a name (I took the name of the API)
+>         ![image](https://user-images.githubusercontent.com/46388493/51983993-86676f80-249a-11e9-85de-5e3eccd0122d.png)
+> 
+>     12. Next select your e-mail and then give it a name (I again took the name of the API)
+>         ![image](https://user-images.githubusercontent.com/46388493/51984095-c62e5700-249a-11e9-9cc4-b8e6986b2dfd.png)
+> 
+>     13. Click on "Download" (A .json file will be downloaded)
+>         ![image](https://user-images.githubusercontent.com/46388493/51984163-f4ac3200-249a-11e9-914a-956b956fc51d.png)
+> 
+>     14. Open the .json file in the editor of your choice.(Notepad++ prefered)
+>         You should see :
+> 
+> 
+>     * "client_id" which looks like this: `81915486XXXX-XXXX22bh62ql2rbnaqtpds82od4ql976.apps.googleusercontent.com`
+> 
+>     * "client_secret" which are random characters like this: `lnA7ZFg5NEGOMpFhd6e4Pqny`
+> 
+> 
+>     1. In the unzipped repository open the file names "handlers_drive.go" (via Notepad++) and change these 2 variables to the ones you got in step 14
+>        ![image](https://user-images.githubusercontent.com/46388493/51984552-f0ccdf80-249b-11e9-9cd3-af6d7550f3e4.png)
+>        and save it
+> 
+>     2. open CMD/terminal and go to the folder where the "handerls_drive.go" is.
+>        First type this: `go get github.com/prasmussen/gdrive` (thanks to mbenlioglu [#426 (comment)](https://github.com/gdrive-org/gdrive/issues/426#issuecomment-459046466))
+>        Now type this: `go build -ldflags '-w -s'`
+>        Now you should have an executable for you platform which you can use normally
+> 
+> 
+> You can reset your data by deleting the `%appdata%\.gdrive` on Windows, `$HOME/.gdrive` on other platforms
+> ### Cross Compiling a Linux/OS X/Windows etc. version of gdrive from your device:
+> 
+> If you want to compile the binary **for an OS other than the one you're using** you should first set `GOOS` and `GOARCH` variables for that system.
+> Look up your target OS here: https://golang.org/doc/install/source#environment
+> 
+> Now do this in terminal:
+> **On Windows:**
+> 
+> ```
+> SET GOOS=your os
+> SET GOARCH=your arch
+> ```
+> 
+> **On Mac OS/Linux:**
+> 
+> ```
+> export GOOS=your os
+> export GOARCH=your arch
+> ```
+> 
+> then do `go build -ldflags '-w -s'`
+> 
+> **Example variables if target platform is a 64 bit Linux machine:**
+> `GOOS=linux`
+> `GOARCH=amd64`
+> 
+> **Edit:** Updated to cover all platforms
+
+
+
+
+
+
+
 ## Note
 ~~This tool is not being actively maintained at the moment, ymmv~~ **Active maintenance will be resumed soon.**
 For incremental and encrypted backup of unix systems [borg](https://github.com/borgbackup/borg)
